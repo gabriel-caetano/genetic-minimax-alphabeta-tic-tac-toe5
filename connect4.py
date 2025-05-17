@@ -1,12 +1,24 @@
-class Connecta4:
+
+#                  board
+#        0     1     2     3     4   
+#     +-----+-----+-----+-----+-----+
+#  0  |     |     |     |     |     |
+#     +-----+-----+-----+-----+-----+
+#  1  |     |     |     |     |     |
+#     +-----+-----+-----+-----+-----+
+#  2  |     |     |     |     |     |
+#     +-----+-----+-----+-----+-----+
+#  3  |     |     |     |     |     |
+#     +-----+-----+-----+-----+-----+
+#  4  |     |     |     |     |     |
+#     +-----+-----+-----+-----+-----+
+
+class Connect4:
     def __init__(self):
         self.board = [[' ']*5 for _ in range(5)]
         self.current_player = 'X'
         self.count_moves = 0
         self.moves_log = ''
-        self.__is_terminal = False
-        self.__player_won = False
-        self.value = 0
 
     def is_full_board(self):
         for row in range(5):
@@ -16,13 +28,9 @@ class Connecta4:
         return True
 
     def is_terminal(self):
-        if (self.__is_terminal):
-            return True
         player_won = self.has_player_won()
         full_board = self.is_full_board()
         if player_won or full_board:
-            self.__is_terminal = True
-            self.__player_won = True
             return True
         
     def valid_actions(self):
@@ -84,7 +92,7 @@ class Connecta4:
         if self.board[row][column] != ' ':
             return None
  
-        new_state = Connecta4()
+        new_state = Connect4()
         new_board = [row.copy() for row in self.board]
 
         new_board[row][column] = self.current_player
@@ -96,14 +104,13 @@ class Connecta4:
         return new_state
     
     def has_player_won(self):
-        total_lines = 0
         # Verifica vitória horizontal
         for row in range(5):
             for col in range(2):  # Colunas 0, 1 (permite 4 peças)
                 if (self.board[row][col] != ' ' and
                     self.board[row][col] == self.board[row][col+1] ==
                     self.board[row][col+2] == self.board[row][col+3]):
-                    total_lines += 1
+                    return True
 
         # Verifica vitória vertical
         for col in range(5):
@@ -111,7 +118,7 @@ class Connecta4:
                 if (self.board[row][col] != ' ' and
                     self.board[row][col] == self.board[row+1][col] ==
                     self.board[row+2][col] == self.board[row+3][col]):
-                    total_lines += 1
+                    return True
 
         # Verifica diagonais decrescente (direita)
         for row in range(2):
@@ -119,7 +126,7 @@ class Connecta4:
                 if (self.board[row][col] != ' ' and
                     self.board[row][col] == self.board[row+1][col+1] ==
                     self.board[row+2][col+2] == self.board[row+3][col+3]):
-                    total_lines += 1
+                    return True
 
         # Verifica diagonais decrescente (esquerda)
         for row in range(2):
@@ -127,9 +134,9 @@ class Connecta4:
                 if (self.board[row][col] != ' ' and
                     self.board[row][col] == self.board[row+1][col-1] ==
                     self.board[row+2][col-2] == self.board[row+3][col-3]):
-                    total_lines += 1
+                    return True
 
-        return total_lines
+        return False
     
     def __str__(self):
         result = ["       0     1     2     3     4"]

@@ -1,5 +1,4 @@
 
-import time
 from evaluator import Evaluator
 evaluator = Evaluator(weights=[1,1,1])
 
@@ -13,7 +12,6 @@ def minimax(state, alpha, beta, depth=0):
                 value = 1000
         else:
             value = evaluator.evaluate(state)
-        print(f"Evaluating state: {state}, Value: {value}")
         return value
 
     
@@ -21,7 +19,6 @@ def minimax(state, alpha, beta, depth=0):
         max_eval = float('-inf')
         for child in state.valid_actions():
             value = minimax(child, alpha, beta, depth - 1)
-            
             max_eval = max(max_eval, value)
             alpha = max(alpha, max_eval)
             if beta >= alpha:
